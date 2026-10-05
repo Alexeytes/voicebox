@@ -1,6 +1,7 @@
+import os
+
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
-import os
 
 router = APIRouter()
 AUDIO_DIR = "output"

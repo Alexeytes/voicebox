@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Request, Form, Response
+from fastapi import APIRouter, Form, Request, Response
 from fastapi.responses import HTMLResponse, RedirectResponse
-from app.auth.passwords import hash_password, verify_password
-from app.auth.sessions import create_session, SESSION_COOKIE
+
+from app.auth.passwords import verify_password
+from app.auth.sessions import SESSION_COOKIE, create_session
 from app.db.repositories import get_user_by_username
-from app.config import settings
 
 router = APIRouter()
 

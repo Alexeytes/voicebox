@@ -1,7 +1,8 @@
-from app.db.repositories import add_stats_event
-from app.db.models import StatsEvent
-from typing import Any, Dict, Optional
 from datetime import datetime
+
+from app.db.models import StatsEvent
+from app.db.repositories import add_stats_event
+
 
 async def log_event(event_type: str, **data):
     event = StatsEvent(

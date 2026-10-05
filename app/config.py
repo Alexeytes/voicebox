@@ -1,5 +1,6 @@
+
 from pydantic_settings import BaseSettings
-from typing import Any, Optional
+
 
 class Settings(BaseSettings):
     MAX_TEXT_LEN: int = 10000

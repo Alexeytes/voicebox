@@ -1,6 +1,10 @@
-from fastapi import APIRouter, Form, File, UploadFile, Request, status
-from fastapi.responses import RedirectResponse, HTMLResponse, JSONResponse
-import os, uuid, shutil
+import os
+import shutil
+import uuid
+
+from fastapi import APIRouter, UploadFile
+from fastapi.responses import JSONResponse, RedirectResponse
+
 DATA_DIR = "data/banners"
 os.makedirs(DATA_DIR, exist_ok=True)
 ALLOWED_EXT = {"png", "jpg", "jpeg", "gif", "webp"}
@@ -8,7 +12,10 @@ ALLOWED_EXT = {"png", "jpg", "jpeg", "gif", "webp"}
 router = APIRouter()
 
 @router.post("/admin/banners/upload")
-def upload_banner_image(image: UploadFile = File(...)):
+def upload_banner_image(image: UploadFile = None):
+    if image is None:
+        from fastapi import File
+        image = File(...)
     ext = image.filename.rsplit('.', 1)[-1].lower()
     if ext not in ALLOWED_EXT:
         return JSONResponse({"error": "unsupported file"}, status_code=400)

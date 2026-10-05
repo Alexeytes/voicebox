@@ -1,8 +1,12 @@
 from __future__ import annotations
-from app.tts.base import TTSEngine, Voice
-from gtts import gTTS
+
 import asyncio
-from typing import Iterable
+from collections.abc import Iterable
+
+from gtts import gTTS
+
+from app.tts.base import TTSEngine, Voice
+
 
 class GTTSEngine(TTSEngine):
     name = "gtts"

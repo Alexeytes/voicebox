@@ -1,6 +1,9 @@
-from itsdangerous import URLSafeTimedSerializer
-from app.config import settings
 import time
+
+from itsdangerous import URLSafeTimedSerializer
+
+from app.config import settings
+
 SESSION_COOKIE = 'vb_session'
 serializer = URLSafeTimedSerializer(settings.SECRET_KEY)
 

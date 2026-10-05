@@ -1,5 +1,8 @@
-import random, time
+import random
+import time
+
 from app.db.repositories import get_active_banners
+
 
 def select_active_banner(position: str, now: float = None):
     banners = get_active_banners(position, now or time.time())

@@ -1,9 +1,10 @@
-import sys
-import getpass
 import asyncio
-from app.db.database import get_db
+import getpass
+import sys
+
 from app.auth.passwords import hash_password
-from app.config import settings
+from app.db.database import get_db
+
 
 async def create_user(username: str):
     db = await get_db()

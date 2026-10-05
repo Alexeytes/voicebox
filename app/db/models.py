@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
+
 
 @dataclass()
 class User:
@@ -15,12 +15,12 @@ class StatsEvent:
     ts: datetime
     event_type: str
     ip_hash: str
-    lang: Optional[str]
-    voice_id: Optional[str]
-    engine: Optional[str]
-    duration_ms: Optional[int]
-    status: Optional[str]
-    meta_json: Optional[str]
+    lang: str | None
+    voice_id: str | None
+    engine: str | None
+    duration_ms: int | None
+    status: str | None
+    meta_json: str | None
 
 @dataclass()
 class Banner:
@@ -30,8 +30,8 @@ class Banner:
     target_url: str
     alt_text: str
     weight: int
-    active_from: Optional[datetime]
-    active_to: Optional[datetime]
+    active_from: datetime | None
+    active_to: datetime | None
     enabled: bool
     position: str
-    html_snippet: Optional[str]
+    html_snippet: str | None

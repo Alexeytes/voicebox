@@ -1,9 +1,12 @@
-from fastapi import APIRouter, Query, Form, Request, BackgroundTasks
-from fastapi.responses import JSONResponse, Response, FileResponse
-from app.tts.registry import list_all_voices
+import hashlib
+import os
+import time
+
+from fastapi import APIRouter, BackgroundTasks, Form, Query, Request
+from fastapi.responses import FileResponse, JSONResponse
+
 from app.tts.gtts_engine import GTTSEngine
-import os, hashlib, time
-from app.config import settings
+from app.tts.registry import list_all_voices
 
 router = APIRouter()
 PREVIEW_DIR = "output/preview"

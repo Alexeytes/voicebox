@@ -1,26 +1,25 @@
-from app.tts.gtts_engine import GTTSEngine
-from app.tts.edge_engine import EdgeTTSEngine, TTSEngineUnavailable
-from app.tts.base import Voice, TTSEngine
-from typing import List
 
-def get_all_engines() -> List[TTSEngine]:
+import contextlib
+
+from app.tts.base import TTSEngine, Voice
+from app.tts.edge_engine import EdgeTTSEngine, TTSEngineUnavailableError
+from app.tts.gtts_engine import GTTSEngine
+
+
+def get_all_engines() -> list[TTSEngine]:
     engines = []
-    try:
+    with contextlib.suppress(Exception):
         engines.append(GTTSEngine())
-    except Exception:
-        pass
-    try:
+    with contextlib.suppress(Exception):
         engines.append(EdgeTTSEngine())
-    except Exception:
-        pass
     return engines
 
-def list_all_voices() -> List[Voice]:
+def list_all_voices() -> list[Voice]:
     voices = []
     for engine in get_all_engines():
         try:
             voices.extend(engine.list_voices())
-        except TTSEngineUnavailable:
+        except TTSEngineUnavailableError:
             pass
         except Exception:
             pass

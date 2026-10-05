@@ -1,10 +1,14 @@
 from __future__ import annotations
-from app.tts.base import TTSEngine, Voice
-import asyncio
-from edge_tts import Communicate, VoicesManager
-from typing import Iterable
 
-class TTSEngineUnavailable(Exception):
+import asyncio
+from collections.abc import Iterable
+
+from edge_tts import Communicate, VoicesManager
+
+from app.tts.base import TTSEngine, Voice
+
+
+class TTSEngineUnavailableError(Exception):
     pass
 
 class EdgeTTSEngine(TTSEngine):
@@ -14,8 +18,8 @@ class EdgeTTSEngine(TTSEngine):
     def list_voices(self) -> Iterable[Voice]:
         try:
             voices = asyncio.run(self._list_voices_async())
-        except Exception:
-            raise TTSEngineUnavailable
+        except Exception as err:
+            raise TTSEngineUnavailableError from err
         return [Voice(id=f"edge:{v['ShortName']}", engine=self.name, language=v['Locale'][:2],
                       locale=v['Locale'], gender=v['Gender'].lower(), name=v['ShortName'], description=v['FriendlyName'])
                 for v in voices]
@@ -30,4 +34,4 @@ class EdgeTTSEngine(TTSEngine):
             return b"".join([c async for c, _ in communicate.stream()])
         except Exception as e:
             # 403 (no quota/region fail), NoAudioReceived, etc
-            raise TTSEngineUnavailable from e
+            raise TTSEngineUnavailableError from e

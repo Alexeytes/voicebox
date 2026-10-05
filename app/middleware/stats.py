@@ -1,7 +1,11 @@
+import asyncio
+import hashlib
+
 from starlette.middleware.base import BaseHTTPMiddleware
-from app.stats.collector import log_event
+
 from app.config import settings
-import hashlib, json, asyncio
+from app.stats.collector import log_event
+
 
 class StatsMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
