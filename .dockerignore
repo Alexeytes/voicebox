@@ -1,0 +1,16 @@
+__pycache__/
+.venv/
+venv/
+*.pyc
+*.egg-info/
+.git/
+.env
+output/
+tmp/
+data/
+site/
+prototype/
+docs/
+tests/
+.pytest_cache/
+.ruff_cache/

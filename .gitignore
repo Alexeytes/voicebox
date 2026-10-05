@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+
+# Environments
+.venv/
+venv/
+.env
+.env.*
+
+# Data/files
+output/
+tmp/
+data/
+site/
+
+# Dev caches
+.pytest_cache/
+.ruff_cache/
+
+# Others
+.DS_Store
