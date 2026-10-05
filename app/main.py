@@ -6,8 +6,10 @@ from app.routes.audio import router as audio_router
 from app.routes.voices import router as voices_router
 from app.routes.admin_auth import router as admin_auth_router
 from fastapi.middleware.cors import CORSMiddleware
+from app.middleware.stats import StatsMiddleware
 
 app = FastAPI()
+app.add_middleware(StatsMiddleware)
 
 app.include_router(pages_router)
 app.include_router(synthesize_router)
