@@ -1,0 +1,1 @@
+# Тестовый набор pytest/asyncio
