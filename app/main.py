@@ -16,5 +16,7 @@ app.include_router(synthesize_router)
 app.include_router(audio_router)
 app.include_router(voices_router)
 app.include_router(admin_auth_router)
+from app.routes.admin_settings import router as admin_settings_router
+app.include_router(admin_settings_router)
 
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
