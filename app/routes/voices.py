@@ -1,8 +1,14 @@
-from fastapi import APIRouter, Query
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Query, Form, Request, BackgroundTasks
+from fastapi.responses import JSONResponse, Response, FileResponse
 from app.tts.registry import list_all_voices
+from app.tts.gtts_engine import GTTSEngine
+import os, hashlib, time
+from app.config import settings
 
 router = APIRouter()
+PREVIEW_DIR = "output/preview"
+
+os.makedirs(PREVIEW_DIR, exist_ok=True)
 
 @router.get("/voices")
 def get_voices(lang: str = Query(None)):
@@ -19,3 +25,31 @@ def get_voices(lang: str = Query(None)):
         "description": v.description,
     } for v in voices]
     return JSONResponse(res)
+
+# Короткая фраза для превью (фиксировано)
+PREVIEW_TEXT = {
+    "ru": "Это тестовое превью голоса.",
+    "en": "This is a voice preview.",
+}
+
+@router.post("/voices/preview")
+def voice_preview(request: Request, background_tasks: BackgroundTasks, voice_id: str = Form(...)):
+    # Параметры и ограничения — rate limit делается на уровне middleware позже
+    engine = GTTSEngine()
+    voice = next((v for v in engine.list_voices() if v.id == voice_id), None)
+    if not voice:
+        return JSONResponse({"error": "Unknown voice_id"}, status_code=400)
+    text = PREVIEW_TEXT.get(voice.language, PREVIEW_TEXT["en"])
+    h = hashlib.md5(f"{voice_id}:{text}".encode()).hexdigest()
+    fname = f"{h}.mp3"
+    fpath = os.path.join(PREVIEW_DIR, fname)
+    # Кеш на диск 24 часа
+    if not os.path.exists(fpath) or (time.time() - os.path.getmtime(fpath)) > 60*60*24:
+        # Генерируем превью
+        data = engine.synthesize(text, voice_id)
+        import asyncio
+        if asyncio.iscoroutine(data):
+            data = asyncio.run(data)
+        with open(fpath, "wb") as f:
+            f.write(data)
+    return FileResponse(fpath, media_type="audio/mpeg")
