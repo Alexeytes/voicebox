@@ -34,3 +34,5 @@ CREATE TABLE IF NOT EXISTS stats_events (
     status TEXT,
     meta_json TEXT
 );
+
+CREATE TABLE IF NOT EXISTS app_settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);

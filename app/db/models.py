@@ -9,6 +9,7 @@ class User:
     password_hash: str
     created_at: datetime
 
+
 @dataclass()
 class StatsEvent:
     id: int
@@ -21,6 +22,7 @@ class StatsEvent:
     duration_ms: int | None
     status: str | None
     meta_json: str | None
+
 
 @dataclass()
 class Banner:

@@ -1,3 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "voice-box"
+version = "0.4.0"
+description = "Text and ebook to speech web app"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi", "uvicorn[standard]", "jinja2", "python-multipart", "gtts",
+  "pydub", "pydantic-settings", "passlib[bcrypt]", "itsdangerous",
+  "aiosqlite", "bleach", "edge-tts", "pypdf", "azure-cognitiveservices-speech"
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-asyncio", "pytest-cov", "httpx", "ruff", "mkdocs", "mkdocs-material"]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.setuptools.package-data]
+app = ["templates/*.html", "static/*.js", "static/*.css", "db/migrations/*.sql"]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
@@ -6,8 +31,8 @@ asyncio_mode = "auto"
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-exclude = ["prototype", ".venv", "data", "output", "tmp", "site", "__pycache__"]
+exclude = [".venv", "data", "output", "tmp", "site", "__pycache__"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM"]
-ignore = ["E501"]
+ignore = ["E501", "B008", "SIM105"]

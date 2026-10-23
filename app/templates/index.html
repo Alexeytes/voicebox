@@ -1,30 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Voicebox TTS</title>
-    <style>
-        body { font-family: sans-serif; margin: 2em; max-width: 600px; }
-        textarea { width: 100%; height: 80px; }
-        button, select { padding: 0.5em 1em; font-size: 1em; margin: 0.3em 0; }
-        #status { margin-top: 1em; }
-        audio { margin-top: 1em; display: block; }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101622">
+  <title>Voice Box — озвучивание книг</title>
+  <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-<h1>Генерация речи</h1>
-<form id="tts-form">
-    <label>Язык: <select id="lang-select" name="lang">
-        <option value="ru">Русский</option>
-        <option value="en">English</option>
-    </select></label>
-    <label>Голос: <select id="voice-select" name="voice_id"></select></label>
-    <button id="preview-btn">▶ Прослушать</button><br>
-    <textarea name="text" required placeholder="Введите текст..."></textarea><br>
-    <button type="submit">Сгенерировать</button>
-</form>
-<div id="status"></div>
-<audio id="player" controls style="display:none"></audio>
-<script src="/static/app.js"></script>
+  <header class="topbar"><a class="brand" href="/"><span class="brand-mark">V</span><span>voice box</span></a><a class="admin-link" href="/admin/login">Панель</a></header>
+  <main class="page-shell">
+    <div class="ad-slot" data-position="top" aria-label="Рекламное место"></div>
+    <section class="hero"><p class="eyebrow">ТЕКСТ В АУДИОКНИГУ</p><h1>Пусть книга<br><span>зазвучит.</span></h1><p class="intro">Выберите голос и подготовьте аудио для чтения, работы или дороги.</p></section>
+    <section class="workspace">
+      <form id="tts-form">
+        <div class="form-heading"><div><span class="step">01</span><h2>Материал</h2></div><span class="format-hint">TXT · PDF · DOCX · EPUB · FB2 · ODT · HTML · RTF · MD</span></div>
+        <label class="upload-card" for="book-file"><span class="upload-icon">↑</span><span><strong id="file-label">Загрузить книгу</strong><small>Выберите файл до 25 МБ или введите текст ниже</small></span><input id="book-file" name="book" type="file" accept=".txt,.pdf,.docx,.epub,.fb2,.odt,.html,.htm,.rtf,.md,.markdown,text/plain,application/pdf,application/epub+zip"></label>
+        <label class="field-label" for="book-text">Или вставьте фрагмент</label><textarea id="book-text" name="text" placeholder="Вставьте текст для озвучивания…" maxlength="10000"></textarea><div class="text-meta"><span id="char-count">0 символов</span><span>Максимум 10 000 символов</span></div>
+        <div class="ad-slot ad-slot-inline" data-position="between" aria-label="Рекламное место"></div>
+        <div class="form-heading voice-heading"><div><span class="step">02</span><h2>Звучание</h2></div></div>
+        <div class="choice-grid"><label><span class="field-label">Язык</span><select id="lang-select" name="lang"><option value="ru">Русский</option><option value="en">English</option></select></label><label><span class="field-label">Голос</span><select id="voice-select" name="voice_id"></select></label></div>
+        <div class="choice-grid"><label><span class="field-label">Манера чтения</span><select id="style-select" name="style"><option value="natural">Естественно</option><option value="expressive">Выразительно</option><option value="calm">Серьёзно</option></select></label><div class="voice-note" id="voice-note">Прослушайте образец, чтобы выбрать подходящий голос.</div></div>
+        <div class="actions"><button class="button-secondary" id="preview-btn" type="button">▶ <span>Образец голоса</span></button><button class="button-primary" type="submit">Создать аудио <span>→</span></button><audio id="preview-player" controls hidden></audio></div>
+      </form>
+      <section class="result-panel" id="result-panel" aria-live="polite"><div class="ad-slot ad-sidebar" data-position="sidebar" aria-label="Рекламное место"></div><div class="result-empty"><span class="sound-icon">♫</span><h2>Ваше аудио появится здесь</h2><p>После обработки его можно прослушать и скачать.</p></div><div id="job-progress" hidden><progress id="progress-bar" max="100" value="0"></progress><p id="progress-label"></p><button type="button" id="cancel-poll">Остановить ожидание</button></div><div class="result-content" id="result-content" hidden><div class="result-title"><div><p class="eyebrow">АУДИО ГОТОВО</p><h2>Можно слушать</h2></div><span class="done-mark">✓</span></div><audio id="player" controls></audio><a class="download-link" id="download-link" download>Скачать MP3 <span>↓</span></a><div class="stats-grid"><div><strong id="stat-words">—</strong><span>слов</span></div><div><strong id="stat-time">—</strong><span>время создания</span></div><div><strong id="stat-duration">—</strong><span>примерно минут аудио</span></div></div></div><section class="history-panel" id="history" hidden><h2>Недавние аудио</h2><ul id="history-list"></ul></section></section>
+    </section>
+    <div class="ad-slot" data-position="bottom" aria-label="Рекламное место"></div>
+    <p class="service-note">Бесплатные голоса создают естественную речь. Для расширенных выразительных стилей настройте Azure Speech в сервере.</p>
+    <footer>Voice Box <span>Превратите текст в звучащую историю</span></footer>
+  </main>
+  <script src="/static/app.js" defer></script>
 </body>
 </html>

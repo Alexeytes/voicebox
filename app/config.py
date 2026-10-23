@@ -1,5 +1,4 @@
-
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -15,7 +14,7 @@ class Settings(BaseSettings):
     SYNTHESIS_TIMEOUT: int = 180
     PREVIEW_TIMEOUT: int = 15
     CLEANUP_INTERVAL: int = 300
-    MAX_REQUEST_BODY_BYTES: int = 262144
+    MAX_REQUEST_BODY_BYTES: int = 31457280
     ADMIN_SESSION_TTL: int = 604800
     ADMIN_LOGIN_ATTEMPTS: int = 5
     ADMIN_ATTEMPT_WINDOW_MIN: int = 15
@@ -25,8 +24,10 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     HTTPS_ONLY: bool = False
     TRUST_PROXY: bool = False
+    AZURE_SPEECH_KEY: str = ""
+    AZURE_SPEECH_REGION: str = ""
 
-    class Config:
-        env_file = ".env"
+    model_config = SettingsConfigDict(env_file=".env")
+
 
 settings = Settings()

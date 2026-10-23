@@ -23,3 +23,7 @@ site/
 
 # Others
 .DS_Store
+
+# Test and docs build output
+.coverage
+htmlcov/

@@ -14,15 +14,15 @@ class Voice:
     gender: str
     name: str
     description: str = ""
+    styles: tuple[str, ...] = ("natural",)
+
 
 class TTSEngine(ABC):
     name: str
     supports_preview: bool = True
 
     @abstractmethod
-    def list_voices(self) -> Iterable[Voice]:
-        ...
+    def list_voices(self) -> Iterable[Voice]: ...
 
     @abstractmethod
-    async def synthesize(self, text: str, voice_id: str) -> bytes:
-        ...
+    async def synthesize(self, text: str, voice_id: str, style: str = "natural") -> bytes: ...

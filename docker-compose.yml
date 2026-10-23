@@ -1,12 +1,11 @@
-version: '3.9'
 services:
   voicebox:
     build: .
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     volumes:
       - ./output:/app/output
       - ./data:/app/data
-      - ./tmp:/app/tmp
-    environment:
-      - PYTHONUNBUFFERED=1
+    restart: unless-stopped

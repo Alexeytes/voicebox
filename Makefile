@@ -1,20 +1,26 @@
+.PHONY: install develop install-dev test lint docs docs-serve run clean docker-build docker-up admin-user prune-stats
 install:
-	. .venv/bin/activate && pip install -e .
-
-develop:
-	. .venv/bin/activate && pip install -r requirements-dev.txt
-
+	python -m pip install -e .
+develop install-dev:
+	python -m pip install -e '.[dev]'
 test:
-	PYTHONPATH=. .venv/bin/pytest
+	python -m pytest
 lint:
-	.venv/bin/ruff check .
+	python -m ruff check app tests
 docs:
-	mkdocs build
+	python -m mkdocs build
+docs-serve:
+	python -m mkdocs serve
 run:
-	.venv/bin/uvicorn app.main:app --reload
+	python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+admin-user:
+	python -m app.admin bootstrap
+prune-stats:
+	python -m app.admin prune-stats --older-than 90d
 clean:
-	rm -rf .venv output/* tmp/* data/* site/
+	rm -rf .pytest_cache .ruff_cache .coverage htmlcov build dist *.egg-info site
+	find app -type d -name __pycache__ -prune -exec rm -rf {} +
 docker-build:
-	docker build -t voicebox .
+	docker build -t voice-box .
 docker-up:
 	docker compose up --build

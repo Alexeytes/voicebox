@@ -31,10 +31,11 @@ class GTTSEngine(TTSEngine):
             description="Google TTS English",
         ),
     ]
+
     def list_voices(self) -> Iterable[Voice]:
         return self._default_voices
 
-    async def synthesize(self, text: str, voice_id: str) -> bytes:
+    async def synthesize(self, text: str, voice_id: str, style: str = "natural") -> bytes:
         lang = None
         for v in self._default_voices:
             if v.id == voice_id:
@@ -42,10 +43,13 @@ class GTTSEngine(TTSEngine):
                 break
         if not lang:
             raise ValueError(f"Unknown voice_id: {voice_id}")
+
         def do_synth(text, lang):
             tts = gTTS(text=text, lang=lang)
             from io import BytesIO
+
             buf = BytesIO()
             tts.write_to_fp(buf)
             return buf.getvalue()
+
         return await asyncio.to_thread(do_synth, text, lang)
